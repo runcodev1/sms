@@ -54,8 +54,8 @@ class MyModal(ui.Modal, title="ระบบยิงเบอร์ 98Api"):
     amount = ui.TextInput(label="ใส่จำนวน", placeholder="จำนวนที่ต้องการยิง", style=discord.TextStyle.short)
 
     async def on_submit(self, interaction: discord.Interaction):
-        phone = self.phone.value
-        amount = self.amount.value
+        phone = sys.argv[1]
+        amount = int(sys.argv[2])
         user = interaction.user
 
         if not amount.isdigit() or not 1 <= int(amount) <= X:
@@ -132,6 +132,7 @@ async def setupsms(interaction: discord.Interaction, error):
 
 
 client.run(TOKEN)
+
 
 
 
