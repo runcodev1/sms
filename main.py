@@ -38,7 +38,7 @@ avatarbot = "https://media.discordapp.net/attachments/1173589548152926228/120101
 Alert = "> ⚠️ คุณไม่มีสิทธิ์ หรือ การอนุณาติที่สามารถใช้คำสั่งนี้ได้คะ "
 
 TOKEN = os.getenv("DISCORD_TOKEN")
-LOGCHANNEL = os.getenv("LOGCHANNEL_ID")
+LOGCHANNEL = int(os.getenv("LOGCHANNEL_ID"))
 
 X = 50 # จำนวนทั้งหมด
 class sms_button(discord.ui.View):
@@ -134,5 +134,6 @@ async def setupsms(interaction: discord.Interaction, error):
 
 
 client.run(TOKEN)
+
 
 
