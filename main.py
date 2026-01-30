@@ -50,18 +50,42 @@ class sms_button(discord.ui.View):
 
 
 class MyModal(ui.Modal, title="ระบบยิงเบอร์ 98Api"):
-    phone = ui.TextInput(label="ใส่เบอร์มือถือ 10 หลัก", placeholder="062xxxxxxx", style=discord.TextStyle.short)
-    amount = ui.TextInput(label="ใส่จำนวน", placeholder="จำนวนที่ต้องการยิง", style=discord.TextStyle.short)
+    phone = ui.TextInput(label="ใส่เบอร์มือถือ 10 หลัก")
+    amount = ui.TextInput(label="ใส่จำนวน")
 
     async def on_submit(self, interaction: discord.Interaction):
-        phone = sys.argv[1]
-        amount = int(sys.argv[2])
-        user = interaction.user
+        phone = self.phone.value
+        amount_str = self.amount.value
 
-        if not amount.isdigit() or not 1 <= int(amount) <= X:
-            await interaction.response.send_message(content="จำนวนที่ต้องการยิงต้องอยู่ในช่วง 1-50", ephemeral=True)
+        if not amount_str.isdigit():
+            await interaction.response.send_message(
+                "กรุณาใส่จำนวนเป็นตัวเลข",
+                ephemeral=True
+            )
             return
-    
+
+        amount = int(amount_str)
+
+        if not 1 <= amount <= X:
+            await interaction.response.send_message(
+                "จำนวนต้องอยู่ระหว่าง 1-50",
+                ephemeral=True
+            )
+            return
+
+        # เรียก sms.py ตรงนี้
+        subprocess.Popen([
+            "python",
+            "sms.py",
+            phone,
+            str(amount)
+        ])
+
+        await interaction.response.send_message(
+            f"✅ เริ่มยิงเบอร์ {phone} จำนวน {amount}",
+            ephemeral=True
+        )
+
         embes = discord.Embed(title="สถานะการยิงเบอร์", description="", color=0x15ff00)
         embes.add_field(name="", value=f"```เบอร์ 📵: {phone}```", inline=False)
         embes.add_field(name="", value=f"```สถานะ 🧑‍🏫 : สุ่ม```", inline=False)
@@ -132,6 +156,7 @@ async def setupsms(interaction: discord.Interaction, error):
 
 
 client.run(TOKEN)
+
 
 
 
