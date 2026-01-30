@@ -94,7 +94,7 @@ class MyModal(ui.Modal, title="ระบบยิงเบอร์ 98Api"):
         current_time = datetime.datetime.utcnow()
         local_time = current_time + datetime.timedelta(hours=7)
         embes.timestamp = local_time
-        embes.set_thumbnail(url=user.avatar.url)
+        embes.set_thumbnail(url=interaction.user.display_avatar.url)
         embes.set_image(url="https://media1.giphy.com/media/xFBnkMvpTM6m4/giphy.gif?cid=ecf05e47hghqlrhpbvgv0j5objsdq2hbltz1y23cq75nhdov&ep=v1_gifs_search&rid=giphy.gif&ct=g")
 
         await interaction.response.send_message(content=f"{interaction.user.mention}", embed=embes, ephemeral=True)
@@ -102,7 +102,7 @@ class MyModal(ui.Modal, title="ระบบยิงเบอร์ 98Api"):
         channel = client.get_channel(LOGCHANNEL)
         embed = discord.Embed(title="📳 แจ้งเตือนยิงเบอร์ SMS ", description=f"\n👤 ผู้ใช้งาน : {interaction.user.mention} \n\n📱 เบอร์ที่ยิง : {phone}\n\n↗️ เวลา : {amount} นาที", color=0x15ff00)
         embed.set_author(name="SMS FLOOD 220API", url="", icon_url=avatarbot)   
-        embed.set_thumbnail(url=user.avatar.url)
+        embes.set_thumbnail(url=interaction.user.display_avatar.url)
         embed.timestamp = local_time
         embed.set_image(url="https://media.discordapp.net/attachments/1187996016591507477/1191739199251021914/standard_2.gif?ex=65a6889e&is=6594139e&hm=102d9d8f299911e079dacaa481cc87c3f9e84baba0b3c065448ee8c4853d7769&=&width=585&height=75")
 
@@ -156,6 +156,7 @@ async def setupsms(interaction: discord.Interaction, error):
 
 
 client.run(TOKEN)
+
 
 
 
