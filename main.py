@@ -39,6 +39,13 @@ Alert = "> ⚠️ คุณไม่มีสิทธิ์ หรือ กา
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 LOGCHANNEL = int(os.getenv("LOGCHANNEL_ID"))
+channel = client.get_channel(LOGCHANNEL)
+if channel is None:
+    await interaction.followup.send(
+        "❌ ไม่พบห้อง LOGCHANNEL กรุณาตรวจสอบ LOGCHANNEL_ID",
+        ephemeral=True
+    )
+    return
 
 X = 50 # จำนวนทั้งหมด
 class sms_button(discord.ui.View):
@@ -134,6 +141,7 @@ async def setupsms(interaction: discord.Interaction, error):
 
 
 client.run(TOKEN)
+
 
 
 
