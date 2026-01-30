@@ -57,12 +57,25 @@ class MyModal(ui.Modal, title="ระบบยิงเบอร์ 98Api"):
 
     async def on_submit(self, interaction: discord.Interaction):
         phone = self.phone.value
-        amount = self.amount.value
-        user = interaction.user
+amount_str = self.amount.value
+user = interaction.user
 
-        if not amount.isdigit() or not 1 <= int(amount) <= X:
-            await interaction.response.send_message(content="จำนวนที่ต้องการยิงต้องอยู่ในช่วง 1-50", ephemeral=True)
-            return
+if not amount_str.isdigit():
+    await interaction.response.send_message(
+        "กรุณาใส่ตัวเลขเท่านั้น",
+        ephemeral=True
+    )
+    return
+
+amount = int(amount_str)
+
+if not 1 <= amount <= X:
+    await interaction.response.send_message(
+        "จำนวนที่ต้องการยิงต้องอยู่ในช่วง 1-50",
+        ephemeral=True
+    )
+    return
+
     
         embes = discord.Embed(title="สถานะการยิงเบอร์", description="", color=0x15ff00)
         embes.add_field(name="", value=f"```เบอร์ 📵: {phone}```", inline=False)
@@ -134,4 +147,5 @@ async def setupsms(interaction: discord.Interaction, error):
 
 
 client.run(TOKEN)
+
 
