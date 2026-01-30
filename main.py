@@ -37,7 +37,7 @@ import datetime
 avatarbot = "https://media.discordapp.net/attachments/1173589548152926228/1201018181876199564/standard.gif?ex=65c84a58&is=65b5d558&hm=a90543158db13e39ff1c70b303ff4d9bc12367e51c437e54969af80d4c6c2979&=&width=288&height=288"
 Alert = "> ⚠️ คุณไม่มีสิทธิ์ หรือ การอนุณาติที่สามารถใช้คำสั่งนี้ได้คะ "
 LOGCHANNEL = 1463520487249547386 # IC CAHNNEL ต้องมี
-TOKEN = "MTQ2MzUyMDE1ODkxOTI5NTAxOA.GBVHWq.AXw9wtZbClZ-PAIV7cmShZGRx25D9O0h4LEeHE" # โทเค้นบอทดิสคอร์ด
+TOKEN = os.getenv("DISCORD_TOKEN")
 X = 50 # จำนวนทั้งหมด
 class sms_button(discord.ui.View):
     def __init__(self):
@@ -132,5 +132,6 @@ async def setupsms(interaction: discord.Interaction, error):
 
 
 client.run(TOKEN)
+
 
 
