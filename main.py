@@ -57,30 +57,104 @@ class MyModal(ui.Modal, title="ระบบยิงเบอร์ 98Api"):
 
     async def on_submit(self, interaction: discord.Interaction):
         phone = self.phone.value
-amount_str = self.amount.value
-user = interaction.user
+        amount_str = self.amount.value
+        user = interaction.user
 
-if not amount_str.isdigit():
+    if not amount_str.isdigit():
+        await interaction.response.send_message(
+            "กรุณาใส่ตัวเลขเท่านั้น",
+            ephemeral=True
+        )
+        return
+
+    amount = int(amount_str)
+
+    if not 1 <= amount <= X:
+        await interaction.response.send_message(
+            "จำนวนที่ต้องการยิงต้องอยู่ในช่วง 1-50",
+            ephemeral=True
+        )
+        return
+
+    embes = discord.Embed(
+        title="สถานะการยิงเบอร์",
+        description="",
+        color=0x15ff00
+    )
+
+    embes.add_field(
+        name="",
+        value=f"```เบอร์ 📵: {phone}```",
+        inline=False
+    )
+    embes.add_field(
+        name="",
+        value="```สถานะ 🧑‍🏫 : สุ่ม```",
+        inline=False
+    )
+    embes.add_field(
+        name="",
+        value=f"```เวลา 🗃️ : {amount} นาที```",
+        inline=False
+    )
+
+    current_time = datetime.datetime.utcnow()
+    local_time = current_time + datetime.timedelta(hours=7)
+
+    embes.timestamp = local_time
+    embes.set_thumbnail(url=user.avatar.url)
+    embes.set_image(
+        url="https://media1.giphy.com/media/xFBnkMvpTM6m4/giphy.gif"
+    )
+
     await interaction.response.send_message(
-        "กรุณาใส่ตัวเลขเท่านั้น",
+        content=interaction.user.mention,
+        embed=embes,
         ephemeral=True
     )
-    return
 
-amount = int(amount_str)
+    channel = client.get_channel(LOGCHANNEL)
+    if channel is None:
+        await interaction.followup.send(
+            "❌ ไม่พบห้อง LOGCHANNEL",
+            ephemeral=True
+        )
+        return
 
-if not 1 <= amount <= X:
-    await interaction.response.send_message(
-        "จำนวนที่ต้องการยิงต้องอยู่ในช่วง 1-50",
-        ephemeral=True
+    embed = discord.Embed(
+        title="📳 แจ้งเตือนยิงเบอร์ SMS",
+        description=(
+            f"\n👤 ผู้ใช้งาน : {interaction.user.mention}"
+            f"\n\n📱 เบอร์ที่ยิง : {phone}"
+            f"\n\n↗️ เวลา : {amount} นาที"
+        ),
+        color=0x15ff00
     )
-    return
 
-    
-        embes = discord.Embed(title="สถานะการยิงเบอร์", description="", color=0x15ff00)
-        embes.add_field(name="", value=f"```เบอร์ 📵: {phone}```", inline=False)
-        embes.add_field(name="", value=f"```สถานะ 🧑‍🏫 : สุ่ม```", inline=False)
-        embes.add_field(name="", value=f"```เวลา 🗃️ : {amount} นาที```", inline=False)
+    embed.set_author(
+        name="SMS FLOOD 220API",
+        icon_url=avatarbot
+    )
+    embed.set_thumbnail(url=user.avatar.url)
+    embed.timestamp = local_time
+
+    message1 = await channel.send(
+        content="**🟢 : สถานะกำลังยิงเบอร์**",
+        embed=embed
+    )
+
+    try:
+        subprocess.Popen(
+            ["python", "sms.py", phone, str(amount)]
+        )
+        await asyncio.sleep(amount)
+        await message1.edit(
+            content="**🔴 สถานะยิงเบอร์หมดแล้ว (ถึงเวลาที่กำหนดแล้ว)**",
+            embed=embed
+        )
+    except Exception as e:
+        print(f"Error in apiXaicas_ice: {e}")
+
 
         current_time = datetime.datetime.utcnow()
         local_time = current_time + datetime.timedelta(hours=7)
@@ -147,5 +221,6 @@ async def setupsms(interaction: discord.Interaction, error):
 
 
 client.run(TOKEN)
+
 
 
