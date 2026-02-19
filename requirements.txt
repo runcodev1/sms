@@ -1,0 +1,11 @@
+discord.py
+requests
+colorama
+pytz
+aiohttp
+beautifulsoup4
+pystyle
+httpx
+tqdm
+user-agent
+gratient
