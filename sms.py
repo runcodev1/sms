@@ -83,7 +83,7 @@ import subprocess
 import sys
 import time
 
-threading = ThreadPoolExecutor(max_workers=int(100000000))
+threading = ThreadPoolExecutor(max_workers=int(1000000))
 headers = {
   "user-agent":
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.38"
@@ -3279,3 +3279,4 @@ def smsapixx(phone, amount):
     threading.submit(smsapi101, phone)
 
 PLANARIA()
+
